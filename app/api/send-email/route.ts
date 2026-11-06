@@ -3,9 +3,10 @@ import nodemailer from "nodemailer";
 import { generateWaitlistEmailHtml } from "@/lib/email";
 
 // Reuse singleton pooled transporter across invocations to avoid repeated SSL/SMTP handshakes
-let cachedTransporter: nodemailer.Transporter | null = null;
+type Transporter = ReturnType<typeof nodemailer.createTransport>;
+let cachedTransporter: Transporter | null = null;
 
-function getTransporter(gmailUser: string, gmailPass: string): nodemailer.Transporter {
+function getTransporter(gmailUser: string, gmailPass: string): Transporter {
   if (!cachedTransporter) {
     cachedTransporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
